@@ -1,0 +1,87 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0099cc"
+    tools:context=".LoginActivity" >
+
+    <LinearLayout
+        android:id="@+id/fullscreen_content"
+        style="?buttonBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|center_vertical"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/username"
+            android:layout_width="200dp"
+            android:layout_height="fill_parent"
+            android:ems="10"
+            android:textColor="#000"
+            android:padding="6dip"
+            android:background="@color/white_overlay"
+            android:layout_marginBottom="3dp"
+            android:hint="@string/username" >
+
+            <requestFocus />
+        </EditText>
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="200dp"
+            android:layout_height="fill_parent"
+            android:ems="10"
+            android:textColor="#000"
+            android:padding="6dip"
+            android:background="@color/white_overlay"
+            android:hint="@string/password"
+            android:layout_marginBottom="5dp"
+            android:inputType="textPassword" >
+        </EditText>
+        
+        <CheckBox
+            android:id="@+id/remember_me"
+            android:layout_width="200dp"
+            android:layout_height="fill_parent"
+            android:padding="6dip"
+            android:text="@string/remember_me"
+            android:textColor="#fff"/>
+
+        <Button
+            android:id="@+id/sign_in"
+            style="?buttonBarButtonStyle"
+            android:layout_width="200dp"
+            android:layout_height="fill_parent"
+            android:textColor="#fff"
+            android:background="@drawable/sign_in_button"
+            android:text="@string/sign_in" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true" >
+
+        <LinearLayout
+            android:id="@+id/fullscreen_content_controls"
+            style="?buttonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:background="@color/black_overlay"
+            android:orientation="horizontal"
+            tools:ignore="UselessParent" >
+
+            <Button
+                android:id="@+id/create_account"
+                style="?buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/create_account" />
+        </LinearLayout>
+
+    </FrameLayout>
+
+</FrameLayout>
