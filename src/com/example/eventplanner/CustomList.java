@@ -53,7 +53,7 @@ public View getView(int position, View view, ViewGroup parent) {
 	TextView EventDescription = (TextView) rowView.findViewById(R.id.description);
 	ImageView imageView = (ImageView) rowView.findViewById(R.id.img);
 	EventName.setText(events.get(position).getName());
-	EventDate.setText((CharSequence) events.get(position).getEventDate());
+	EventDate.setText(events.get(position).getEventDate().toString());
 	EventDescription.setText(events.get(position).getDescription());
 	imageView.setImageResource(imageId);
 	return rowView;

@@ -8,6 +8,7 @@ public class Event {
 	private String description;
 	private String username;
 	private Timestamp event_date;
+	private String uri;
 
 	public String getDescription() {
 		return description;
@@ -52,5 +53,13 @@ public class Event {
 	@Override
 	public String toString() {
 		return name;
+	}
+
+	public String getUri() {
+		return uri;
+	}
+
+	public void setUri(String uri) {
+		this.uri = uri;
 	}
 }

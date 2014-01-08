@@ -74,7 +74,7 @@ public class EventsDataSource {
 		List<Event> events = new ArrayList<Event>();
 
 		Cursor cursor = database.query("events", new String[] { "id", "name",
-				"description", "event_date" }, "username = '" + username + "'",
+				"description", "event_date", "username", "uri" }, "username = '" + username + "'",
 				null, null, null, null);
 		System.out.println("Helloooo2");
 		cursor.moveToFirst();
@@ -96,6 +96,7 @@ public class EventsDataSource {
 		event.setDescription(cursor.getString(2));
 		event.setEventDate(Timestamp.valueOf(cursor.getString(3)));
 		event.setUserName(cursor.getString(4));
+		event.setUri(cursor.getString(5));
 		return event;
 	}
 }
