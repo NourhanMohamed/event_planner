@@ -3,6 +3,7 @@ package com.example.eventplanner.database;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -34,23 +35,30 @@ public class EventsDataSource {
 
 	public Event createEvent(String username, String name, String description,
 			Timestamp datetime) {
+		ContentValues event = new ContentValues();
+		event.put("calendar_id", "0");
+		event.put("title", name);
+		event.put("description", description);
+		event.put("eventTimezone", TimeZone.getDefault().getID());
+		long startTime = datetime.getTime();
+		event.put("dtstart", startTime);
+		event.put("dtend", startTime);
+		event.put("allDay", 1);
+		Uri eventsUri = Uri.parse("content://com.android.calendar/events");
+		Uri uri = context.getContentResolver().insert(eventsUri, event);
+		
 		ContentValues values = new ContentValues();
 		values.put("name", name);
 		values.put("description", description);
 		values.put("event_date", datetime.toString());
 		values.put("username", username);
+		values.put("uri", uri.getPath());
 		long insertId = database.insert("events", null, values);
-		ContentValues event = new ContentValues();
-		event.put("calendar_id", "nourhan.abdeltawab@gmail.com");
-		event.put("title", name);
-		event.put("description", description);
-		long startTime = datetime.getTime();
-		event.put("dtstart", startTime);
-		event.put("allDay", 1);
-		Uri eventsUri = Uri.parse("content://calendar/events");
-		Uri url = context.getContentResolver().insert(eventsUri, event);
+		if(insertId == -1){
+			return null;
+		}
 		Cursor cursor = database.query("events", new String[] { "id", "name",
-				"description", "event_date", "username" }, "id" + " = "
+				"description", "event_date", "username", "uri"}, "id" + " = "
 						+ insertId, null, null, null, null);
 		cursor.moveToFirst();
 		Event newEvent = cursorToEvent(cursor);

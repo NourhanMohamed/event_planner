@@ -4,6 +4,8 @@ import java.util.List;
 
 import android.app.Activity;
 import com.example.eventplanner.database.Event;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,32 +43,32 @@ System.out.println("HElloooooo7");
 		
 
 @Override
+public View getView(int position, View view, ViewGroup parent) {
+	Log.e("NOURHAAAAAAAAAAAAAAN", "WESEL");
+	System.out.println("Hello444");
+	LayoutInflater inflater = context.getLayoutInflater();
+	View rowView= inflater.inflate(R.layout.list_single, null, true);
+	TextView EventName = (TextView) rowView.findViewById(R.id.name);
+	TextView EventDate = (TextView) rowView.findViewById(R.id.date);
+	TextView EventDescription = (TextView) rowView.findViewById(R.id.description);
+	ImageView imageView = (ImageView) rowView.findViewById(R.id.img);
+	EventName.setText(events.get(position).getName());
+	EventDate.setText((CharSequence) events.get(position).getEventDate());
+	EventDescription.setText(events.get(position).getDescription());
+	imageView.setImageResource(imageId);
+	return rowView;
+}
+
 //public View getView(int position, View view, ViewGroup parent) {
-//Log.e("NOURHAAAAAAAAAAAAAAN", "WESEL");
-//System.out.println("Hello444");
+//System.out.println("EEEEEEEEEEEEEEEEEEEEH");
 //LayoutInflater inflater = context.getLayoutInflater();
 //View rowView= inflater.inflate(R.layout.list_single, null, true);
-//TextView EventName = (TextView) rowView.findViewById(R.id.name);
-//TextView EventDate = (TextView) rowView.findViewById(R.id.date);
-//TextView EventDescription = (TextView) rowView.findViewById(R.id.description);
+//TextView txtTitle = (TextView) rowView.findViewById(R.id.name);
+//
 //ImageView imageView = (ImageView) rowView.findViewById(R.id.img);
-//EventName.setText(events.get(position).getName());
-//EventDate.setText((CharSequence) events.get(position).getEventDate());
-//EventDescription.setText(events.get(position).getDescription());
+//txtTitle.setText("HELLO");
+//
 //imageView.setImageResource(imageId);
 //return rowView;
 //}
-
-public View getView(int position, View view, ViewGroup parent) {
-System.out.println("EEEEEEEEEEEEEEEEEEEEH");
-LayoutInflater inflater = context.getLayoutInflater();
-View rowView= inflater.inflate(R.layout.list_single, null, true);
-TextView txtTitle = (TextView) rowView.findViewById(R.id.name);
-
-ImageView imageView = (ImageView) rowView.findViewById(R.id.img);
-txtTitle.setText("HELLO");
-
-imageView.setImageResource(imageId);
-return rowView;
-}
 }
