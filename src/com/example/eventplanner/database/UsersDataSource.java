@@ -72,10 +72,11 @@ public class UsersDataSource {
 	}
 
 	public int autoSignIn() {
-		Cursor cursor = database.query("users", new String[] { "id" },
+		Cursor cursor = database.query("users", new String[] { "id", "username" },
 				"signed_in = 1", null, null, null, null);
 		boolean empty = !cursor.moveToFirst();
 		if (!empty) {
+			Statics.username = cursor.getString(1);
 			return cursor.getCount();
 		}
 		return -1;

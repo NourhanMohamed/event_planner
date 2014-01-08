@@ -3,20 +3,25 @@ package com.example.eventplanner.database;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
+import android.util.Log;
 
 public class EventsDataSource {
 
 	// Database fields
 	private SQLiteDatabase database;
 	private SQLiteHelper dbHelper;
+	private Context context;
 
 	public EventsDataSource(Context context) {
+		this.context = context;
 		dbHelper = new SQLiteHelper(context);
 	}
 
@@ -30,14 +35,30 @@ public class EventsDataSource {
 
 	public Event createEvent(String username, String name, String description,
 			Timestamp datetime) {
+		ContentValues event = new ContentValues();
+		event.put("calendar_id", "0");
+		event.put("title", name);
+		event.put("description", description);
+		event.put("eventTimezone", TimeZone.getDefault().getID());
+		long startTime = datetime.getTime();
+		event.put("dtstart", startTime);
+		event.put("dtend", startTime);
+		event.put("allDay", 1);
+		Uri eventsUri = Uri.parse("content://com.android.calendar/events");
+		Uri uri = context.getContentResolver().insert(eventsUri, event);
+		
 		ContentValues values = new ContentValues();
 		values.put("name", name);
 		values.put("description", description);
 		values.put("event_date", datetime.toString());
 		values.put("username", username);
+		values.put("uri", uri.getPath());
 		long insertId = database.insert("events", null, values);
+		if(insertId == -1){
+			return null;
+		}
 		Cursor cursor = database.query("events", new String[] { "id", "name",
-				"description", "event_date", "username" }, "id" + " = "
+				"description", "event_date", "username", "uri"}, "id" + " = "
 						+ insertId, null, null, null, null);
 		cursor.moveToFirst();
 		Event newEvent = cursorToEvent(cursor);
@@ -52,7 +73,7 @@ public class EventsDataSource {
 	public List<Event> getAllItems(String username) {
 		List<Event> events = new ArrayList<Event>();
 
-		Cursor cursor = database.query("event", new String[] { "id", "name",
+		Cursor cursor = database.query("events", new String[] { "id", "name",
 				"description", "event_date" }, "username = '" + username + "'",
 				null, null, null, null);
 

@@ -26,7 +26,7 @@ public class HomeActivity extends Activity {
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.signout:
+		case R.id.signout: {
 			UsersDataSource uds = new UsersDataSource(getApplicationContext());
 			uds.open();
 			uds.updateSignOut();
@@ -36,6 +36,13 @@ public class HomeActivity extends Activity {
 			finish();
 			startActivity(i);
 			return true;
+		}
+		case R.id.newevent: {
+			Intent i = new Intent(HomeActivity.this,
+					NewEventActivity.class);
+			startActivity(i);
+			return true;
+		}
 		}
 
 		return super.onMenuItemSelected(featureId, item);
