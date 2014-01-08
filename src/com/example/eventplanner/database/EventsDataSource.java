@@ -9,14 +9,18 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
+import android.util.Log;
 
 public class EventsDataSource {
 
 	// Database fields
 	private SQLiteDatabase database;
 	private SQLiteHelper dbHelper;
+	private Context context;
 
 	public EventsDataSource(Context context) {
+		this.context = context;
 		dbHelper = new SQLiteHelper(context);
 	}
 
@@ -36,6 +40,15 @@ public class EventsDataSource {
 		values.put("event_date", datetime.toString());
 		values.put("username", username);
 		long insertId = database.insert("events", null, values);
+		ContentValues event = new ContentValues();
+		event.put("calendar_id", "nourhan.abdeltawab@gmail.com");
+		event.put("title", name);
+		event.put("description", description);
+		long startTime = datetime.getTime();
+		event.put("dtstart", startTime);
+		event.put("allDay", 1);
+		Uri eventsUri = Uri.parse("content://calendar/events");
+		Uri url = context.getContentResolver().insert(eventsUri, event);
 		Cursor cursor = database.query("events", new String[] { "id", "name",
 				"description", "event_date", "username" }, "id" + " = "
 						+ insertId, null, null, null, null);
@@ -52,11 +65,12 @@ public class EventsDataSource {
 	public List<Event> getAllItems(String username) {
 		List<Event> events = new ArrayList<Event>();
 
-		Cursor cursor = database.query("event", new String[] { "id", "name",
+		Cursor cursor = database.query("events", new String[] { "id", "name",
 				"description", "event_date" }, "username = '" + username + "'",
 				null, null, null, null);
-
+		System.out.println("Helloooo2");
 		cursor.moveToFirst();
+		System.out.println("Helloooo3");
 		while (!cursor.isAfterLast()) {
 			Event event = cursorToEvent(cursor);
 			events.add(event);
