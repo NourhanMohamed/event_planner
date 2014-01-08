@@ -2,9 +2,13 @@ package com.example.eventplanner;
 
 import java.sql.Timestamp;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,8 +25,6 @@ import com.example.eventplanner.database.EventsDataSource;
 import com.example.eventplanner.database.Statics;
 import com.example.eventplanner.database.UsersDataSource;
 
-
-
 public class NewEventActivity extends Activity implements OnClickListener {
 	EditText title;
 	EditText description;
@@ -31,7 +33,6 @@ public class NewEventActivity extends Activity implements OnClickListener {
 	Spinner spinnerYears;
 	TimePicker timePick;
 	Button create;
-	
 
 	int day, month, year;
 	int hours, mins;
@@ -40,7 +41,7 @@ public class NewEventActivity extends Activity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_event);
-		
+
 		title = (EditText) findViewById(R.id.editText1);
 		description = (EditText) findViewById(R.id.editText2);
 		spinnerDays = (Spinner) findViewById(R.id.dayspinner);
@@ -130,27 +131,28 @@ public class NewEventActivity extends Activity implements OnClickListener {
 		return super.onMenuItemSelected(featureId, item);
 	}
 
-	
 	public void onClick(View v) {
 		int id = v.getId();
-		if(id == R.id.create_event){
+		if (id == R.id.create_event) {
 			hours = timePick.getCurrentHour();
 			mins = timePick.getCurrentMinute();
 			Timestamp ts = new Timestamp(year, month, day, hours, mins, 0, 0);
 			String name = title.getText().toString();
 			String desc = description.getText().toString();
-			if(name.isEmpty() || desc.isEmpty()){
+			if (name.isEmpty() || desc.isEmpty()) {
 				toast("Title and description can not be empty");
 			} else {
-				EventsDataSource eds = new EventsDataSource(getApplicationContext());
+				EventsDataSource eds = new EventsDataSource(
+						getApplicationContext());
 				eds.open();
 				Event event = eds.createEvent(Statics.username, name, desc, ts);
 				eds.close();
-				
-				if(event == null){
+
+				if (event == null) {
 					toast("Could not create event");
+					return;
 				}
-				
+				requestCalendarSync();
 				Intent i = new Intent(NewEventActivity.this, HomeActivity.class);
 				finish();
 				startActivity(i);
@@ -162,5 +164,22 @@ public class NewEventActivity extends Activity implements OnClickListener {
 		Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT)
 				.show();
 	}
+	
+	 private void requestCalendarSync()
+	 {
+	     AccountManager aM = AccountManager.get(this);
+	     Account[] accounts = aM.getAccounts();
 
+	     for (Account account : accounts)
+	     {
+	         int isSyncable = ContentResolver.getIsSyncable(account,  CalendarContract.AUTHORITY);
+
+	         if (isSyncable > 0)
+	         {
+	             Bundle extras = new Bundle();
+	             extras.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+	             ContentResolver.requestSync(accounts[0], CalendarContract.AUTHORITY, extras);
+	         }
+	     }
+	 }
 }
