@@ -1,0 +1,30 @@
+Features:
+---------
+1. System information
+  - Assignee: Nourhan 
+2. H/W Check (Dell and Quanta)
+	# Assignment:
+	- Dell: Samer and Hima
+	- Quanta: Nourhan
+3. Possible error causes
+	a) Log snippets - Samer
+	b) KB suggestions (manual for start) - Hima
+	c) Bug suggestions (research) - Nourhan
+4. Filtering (timestamp, level of detail) - Hima
+5. GUI (similar to tesseract) - all (tba)
+
+Milestones:
+-----------
+1. 1,2,3(a - manual)
+  - Deadline: 22th of Feb "Karim: 28th of Feb"
+2. 4
+  - Deadline: 28th of Feb
+3. 3 (a,b - automated if APIs exist)
+  - Deadline: End of March
+4. 5
+  - Deadline: tbd
+
+Final Deadline:
+---------------
+End of March, 2018 - for CLI engine
+End of May, 2018 - tbd - for GUI
