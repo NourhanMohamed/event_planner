@@ -3,26 +3,21 @@
 import os,zipfile
 import webbrowser
 
-file = zipfile.ZipFile("c:\\Users\\fayeks\\Desktop\\LL.zip", "r")
-#dir_name= 'C"\\Users||fayeks\\Desktop\\SISO'
+bundle_path = raw_input("Enter bundle path: ")
+file = zipfile.ZipFile(bundle_path)
 
 # creating a new Folder 
-newpath = 'C:\Users\fayeks\Desktop\XXX' 
+newpath = bundle_path + '.extracted'
 if not os.path.exists(newpath):
     os.makedirs(newpath)
 
 # Extract the zipped file in the new folder 
-    
 file.extractall(newpath) 
 
 # Change the Directory to the folder containing the extracted zipped file 
-
 os.chdir(newpath)
 
 # we loop in the folder until we get the directory of the desired log file 
-
-
-
 for root, dirs, files in os.walk(newpath):
    for name in files:
        if name.endswith("connectors-cluster.log"):
